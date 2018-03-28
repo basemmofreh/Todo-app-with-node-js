@@ -1,9 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
-var {mongoose} = require('.././db/mongoose');
-var user = require('.././models/user');
-var Todo = require('.././models/todo');
+var {mongoose} = require('./db/mongoose');
+var user = require('./models/user');
+var Todo = require('./models/todo');
 var app = express();
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
