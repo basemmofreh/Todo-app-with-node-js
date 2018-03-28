@@ -8,7 +8,7 @@ var app = express();
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-
+const port = process.env.PORT || 3000;
 
 
 app.post('/todos',(req,res)=>{
@@ -44,8 +44,8 @@ app.get('/todos/:id',(req,res)=>{
     }).catch((e)=>res.status(400).send);
 });
 
-app.listen('3000',function(){
-  console.log('live on port 3000');
+app.listen(port,function(){
+  console.log(`Live now on port ${port}`);
 })
 
 
