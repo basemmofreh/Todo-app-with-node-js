@@ -6,25 +6,18 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
-    "mongoose": "^5.0.11",
-
+    "mongoose": "^5.0.11"
   },
   "devDependencies": {
+    "expect": "^22.4.3",
     "mocha": "^2.5.0",
     "nodemon": "^1.17.2",
-    "supertest": "^3.0.0",
-    "expect": "^22.4.3"
+    "supertest": "^3.0.0"
   },
   "scripts": {
-    "prestart": "next build",
-    "start": "node edu/server.js",
     "test": "mocha tests/*.test.js",
     "test-start": "nodemon --exec \"npm test\""
   },
-  "engines": {
-    "node": "9.2.0"
-  }
-  ,
   "author": "",
   "license": "ISC"
 }
