@@ -16,6 +16,7 @@
     "expect": "^22.4.3"
   },
   "scripts": {
+    "prestart": "next build",
     "start": "node edu/server.js",
     "test": "mocha tests/*.test.js",
     "test-start": "nodemon --exec \"npm test\""
