@@ -1,15 +1,13 @@
-/**/var express = require('express');
+var express = require('express');
 var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
 var user = require('./models/user');
 var Todo = require('./models/todo');
 var app = express();
-
-const port = process.env.POST||3000;
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-/**/
+
 
 
 
@@ -34,19 +32,20 @@ app.get('/',(req,res)=>{
 
 app.get('/todos/:id',(req,res)=>{
     var userId = req.params.id;
-    if(!ObjectID.isValid(userId))
+
+    if(!ObjectID.isValid(userId)){
       res.status(400).send("BAD REQUEST INVALIED ID");
+    }
     Todo.find({_id:userId}).then((user)=>{
-      if(user.length===0)
+      if(!user)
       res.status(404).send("<h1>USER NOT FOUND</h1>");
-      res.status(200).send(user[0].text);
-    },(err)=>{
-      res.status(404).send(err);
-    });
+      else
+      res.status(200).send({user});
+    }).catch((e)=>res.status(400).send);
 });
 
-app.listen(port,function(){
-  console.log(`live on port ${port}`);
+app.listen('3000',function(){
+  console.log('live on port 3000');
 })
 
 
