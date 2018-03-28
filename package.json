@@ -15,9 +15,14 @@
     "supertest": "^3.0.0"
   },
   "scripts": {
+    "start":"node server.js",
     "test": "mocha tests/*.test.js",
     "test-start": "nodemon --exec \"npm test\""
   },
+  "engines":{
+    "node":"9.2.0"
+  }
+  ,
   "author": "",
   "license": "ISC"
 }
