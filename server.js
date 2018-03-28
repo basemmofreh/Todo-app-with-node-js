@@ -20,7 +20,6 @@ app.post('/todos',(req,res)=>{
     res.status(404).send(e);
   })
 });
-
 app.get('/',(req,res)=>{
   Todo.find({}).then((todos)=>{
       res.status(200).send(todos);
@@ -28,8 +27,6 @@ app.get('/',(req,res)=>{
     res.status(400).send(e);
   })
 })
-
-
 app.get('/todos/:id',(req,res)=>{
     var userId = req.params.id;
 
@@ -43,7 +40,24 @@ app.get('/todos/:id',(req,res)=>{
       res.status(200).send({user});
     }).catch((e)=>res.status(400).send);
 });
+app.delete('/todos/:id',(req,res)=>{
+  let userId = req.params.id;
+  if(ObjectID.isValid(userId)&&userId!=""){
+    Todo.findByIdAndRemove(userId).then((deletedUser)=>{
+      if(!deletedUser)
+      {
+        res.status(404).send("bad request")
+      }
+        res.status(200).send("User deleted successfuly");
+    }).catch((e)=>{
+      throw new Error(e);
+    })
+  }
+  else {
+        res.status(404).send("invalied user id ");
+  }
 
+});
 app.listen(port,function(){
   console.log(`Live now on port ${port}`);
 })
