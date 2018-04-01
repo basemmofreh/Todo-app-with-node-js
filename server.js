@@ -4,6 +4,7 @@ var {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
 var user = require('./models/user');
 var Todo = require('./models/todo');
+var _ = require('lodash');
 var app = express();
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -32,13 +33,14 @@ app.get('/todos/:id',(req,res)=>{
 
     if(!ObjectID.isValid(userId)){
       res.status(400).send("BAD REQUEST INVALIED ID");
+
     }
-    Todo.find({_id:userId}).then((user)=>{
+    Todo.findById(userId).then((user)=>{
       if(!user)
       res.status(404).send("<h1>USER NOT FOUND</h1>");
       else
       res.status(200).send({user});
-    }).catch((e)=>res.status(400).send);
+    }).catch((e)=>res.status(400).send());
 });
 app.delete('/todos/:id',(req,res)=>{
   let userId = req.params.id;
@@ -58,6 +60,32 @@ app.delete('/todos/:id',(req,res)=>{
   }
 
 });
+app.patch('/todos/:id',(req,res)=>{
+    var id = req.params.id;
+      //_.pick is a lodash function allows certain variables only to be stored in var body if they exist
+      //this used to prevent the user from updating inapproperiate fields in the database
+    var body = _.pick(req.body,['text','completed']);
+    if(!ObjectID.isValid(id))
+      {
+        return res.status(404).send();
+      }
+    if(_.isBoolean(body.completed)&&body.completed)
+      {
+        body.completedAt = new Date().getTime();
+      }
+    else{
+      body.completed = false;
+      body.completedAt=null;
+    }
+
+    Todo.findByIdAndUpdate(id,{$set:body},{new:true}).then((todo)=>{
+        if(!todo)
+          res.status(404).send();
+        else {
+          res.status(200).send({todo});
+        }
+    }).catch((e)=>res.status(400).send())
+})
 app.listen(port,function(){
   console.log(`Live now on port ${port}`);
 })
