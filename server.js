@@ -21,7 +21,7 @@ app.post('/todos',(req,res)=>{
   })
 });
 app.get('/',(req,res)=>{
-  Todo.find({}).then((todos)=>{
+  Todo.find().then((todos)=>{
       res.status(200).send(todos);
   }).catch((e)=>{
     res.status(400).send(e);
@@ -43,18 +43,18 @@ app.get('/todos/:id',(req,res)=>{
 app.delete('/todos/:id',(req,res)=>{
   let userId = req.params.id;
   if(ObjectID.isValid(userId)&&userId!=""){
-    Todo.findByIdAndRemove(userId).then((deletedUser)=>{
-      if(!deletedUser)
+    Todo.findByIdAndRemove(userId).then((user)=>{
+      if(!user)
       {
-        res.status(404).send("bad request")
+        res.status(404).send()
       }
-        res.status(200).send("User deleted successfuly");
+      else  res.status(200).send({user});
     }).catch((e)=>{
       throw new Error(e);
     })
   }
   else {
-        res.status(404).send("invalied user id ");
+        res.status(500).send("invalied user id ");
   }
 
 });
