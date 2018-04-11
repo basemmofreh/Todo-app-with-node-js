@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "test": "mocha tests/*.test.js",
+    "test": "export NODE_EVN=test || SET \"NODE_ENV=test\" && mocha tests/*.test.js",
     "test-start": "nodemon --exec \"npm test\""
   },
   "engines": {

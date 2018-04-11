@@ -1,4 +1,5 @@
 var express = require('express');
+var config = require('./models/config');
 var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
@@ -9,7 +10,7 @@ var app = express();
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 
 app.post('/todos',(req,res)=>{
@@ -65,6 +66,7 @@ app.patch('/todos/:id',(req,res)=>{
       //_.pick is a lodash function allows certain variables only to be stored in var body if they exist
       //this used to prevent the user from updating inapproperiate fields in the database
     var body = _.pick(req.body,['text','completed']);
+    console.log('body' + body.completed);
     if(!ObjectID.isValid(id))
       {
         return res.status(404).send();
