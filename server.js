@@ -5,6 +5,7 @@ var {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
 var User = require('./models/user');
 var Todo = require('./models/todo');
+const {authenticate} = require('./middleware/authenticate');
 var _ = require('lodash');
 var app = express();
 app.use(bodyParser.urlencoded({extended:false}));
@@ -13,6 +14,9 @@ app.use(bodyParser.json());
 const port = process.env.PORT;
 
 
+app.get('/users/me',authenticate,(req,res)=>{
+  res.send(req.user);
+});
 app.post('/todos',(req,res)=>{
   var todo = new Todo({text:req.body.text});
 

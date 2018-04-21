@@ -47,7 +47,25 @@ return self.save().then(()=>{
     return token;
   })
 };
+user.statics.findByToken = function(token) {
+    var user = this;
+    var decoded;
 
-
+    try {
+      decoded = jwt.verify(token,'abc123');
+    }
+    catch(e){
+      // return new Promise = ((resolve,reject)=>{
+      //   reject();
+      // })
+      //same meaning as above
+      return Promise.reject();
+    }
+    return user.findOne({
+      '_id': decoded._id,
+      'tokens.token':token,
+      'tokens.access':'auth'
+    })
+}
 
 module.exports = mongoose.model('users',user);
