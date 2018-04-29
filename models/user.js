@@ -33,21 +33,26 @@ var user = new schema({
   }]
 
 });
+
+//.methods where we store instance methods , // toJSON default function you can override to change the return value of the mongoose model
 user.methods.toJSON = function(){
   var self = this;
   var userObject = self.toObject();
   return _.pick(userObject,['_id','email']);
 }
-user.methods.generateAuthToken = function(){
-  var self = this;
-  var access = 'auth';
-  var token = jwt.sign({_id:self._id.toHexString(),access},'abc123').toString();
 
-  self.tokens.push({access,token});
-return self.save().then(()=>{
-    return token;
-  })
-};
+user.methods.generateAuthToken = function (){
+    var self = this;
+    var access = 'auth';
+    var token = jwt.sign({_id:self._id.toHexString(),access},'abc123');
+
+    self.tokens.push({access,token});
+    return self.save().then(()=>{
+        return token;
+    })
+}
+
+//.statics where we store model methods
 user.statics.findByToken = function(token) {
     var user = this;
     var decoded;
@@ -68,6 +73,7 @@ user.statics.findByToken = function(token) {
       'tokens.access':'auth'
     })
 }
+// pre build in function used to make change to data before saving it , in this case hashing password
 user.pre('save',function(next){
     var self = this;
     if(self.isModified('password'))
