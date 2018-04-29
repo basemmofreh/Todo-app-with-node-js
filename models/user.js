@@ -53,6 +53,25 @@ user.methods.generateAuthToken = function (){
 }
 
 //.statics where we store model methods
+user.statics.findbyCrendential = function(email,password){
+    var self = this;
+    return self.findOne({email}).then((user)=>{
+        if(!user)
+        {
+        return  Promise.reject();
+      }
+        return new Promise((resolve,reject)=>{
+            bcrypt.compare(password,user.password,(err,res)=>{
+                if(res)
+                  resolve(user);
+                else {
+                  reject();
+                }
+
+            })
+        })
+    })
+}
 user.statics.findByToken = function(token) {
     var user = this;
     var decoded;
