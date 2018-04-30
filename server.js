@@ -111,6 +111,13 @@ app.post('/users',(req,res)=>{
       res.header('x-auth',token).send(user)
     }).catch((e)=>res.status(400).send(e));
 });
+app.delete('/users/me/token',authenticate,(req,res)=>{
+    req.user.removeToken(req.token).then(()=>{
+        res.status(200).send("logged out succussfuly");
+    },()=>{
+        res.status(400).send("unable to logout");
+    }).catch((e)=>res.status(404).send(e));
+})
 app.listen(port,function(){
   console.log(`Live now on port ${port}`);
 })

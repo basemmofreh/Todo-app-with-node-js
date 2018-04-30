@@ -40,7 +40,16 @@ user.methods.toJSON = function(){
   var userObject = self.toObject();
   return _.pick(userObject,['_id','email']);
 }
-
+user.methods.removeToken = function(token){
+    var self = this;
+  return  self.update({
+      $pull:{
+        tokens:{
+          token
+        }
+      }
+    })
+}
 user.methods.generateAuthToken = function (){
     var self = this;
     var access = 'auth';

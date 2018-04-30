@@ -223,7 +223,6 @@ describe('POST /users/login',()=>{
           .end((err,res)=>{
             if(err)
               return done(err);
-
             User.findById(users[0]._id).then((user)=>{
                 expect(user.tokens[1]).toInclude({
                   access:'auth',
