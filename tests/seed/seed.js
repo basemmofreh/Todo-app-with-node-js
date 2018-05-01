@@ -21,17 +21,23 @@ const users = [{
     _id:userTwoId,
     email:"basemw@gmail.com",
     password:"hello world",
+    tokens:[{
+      access:'auth',
+      token: jwt.sign({_id:userTwoId,access:'auth'},'abc123').toString()
+    }]
 }
 ]
 
 const todos = [{
   _id:new ObjectID(),
   text:'buy new mercedes benz',
+  _creator:userOneId
 },{
   _id:new ObjectID(),
   text:'second test Todo',
   completed:true,
-  completedAt:333
+  completedAt:333,
+  _creator:userTwoId
 }];
 
 const populateTodos =function(done){
