@@ -213,7 +213,7 @@ describe('POST /users',()=>{
       .expect(200)
       .expect((res)=>{
         expect(res.body.email).toBe(email);
-        expect(res.body.password).toNotBe(password);
+        expect(res.body.password).not.toBe(password);
       })
       .end(done);
   })
@@ -252,13 +252,13 @@ describe('POST /users/login',()=>{
           .send({email:users[0].email,password:users[0].password})
           .expect(200)
           .expect((res)=>{
-              expect(res.headers['x-auth']).toExist();
+              expect(res.headers['x-auth']).toBeTruthy();
           })
           .end((err,res)=>{
             if(err)
               return done(err);
             User.findById(users[0]._id).then((user)=>{
-                expect(user.tokens[1]).toInclude({
+                expect(user.toObject().tokens[1]).toMatchObject({
                   access:'auth',
                   token: res.headers['x-auth']
                 });
@@ -273,7 +273,7 @@ describe('POST /users/login',()=>{
           .send({email:users[0].email+'a',password:users[0].password+'1'})
           .expect(400)
           .expect((res)=>{
-            expect(res.headers['x-auth']).toNotExist();
+            expect(res.headers['x-auth']).toBeFalsy();
           })
           .end((err,res)=>{
               if(err)

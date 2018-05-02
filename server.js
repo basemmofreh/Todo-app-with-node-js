@@ -68,11 +68,11 @@ app.delete('/todos/:id',authenticate,(req,res)=>{
     }).then((user)=>{
       if(!user)
       {
-        res.status(404).send()
+        res.status(404).send("fe eh")
       }
-      else  res.status(200).send({user});
+      res.send({user});
     }).catch((e)=>{
-      throw new Error(e);
+      res.status(400).send()
     })
   }
   else {
